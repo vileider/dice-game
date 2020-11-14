@@ -6,15 +6,16 @@ import {useState} from 'react';
 
 function DiceGame() {
     const [areDicesRolling, setAreDicesRolling] = useState(false);
-    const [playerFirstDiceCurrentNumber, setPlayerFirstDiceCurrentNumber] = useState(1);
-    const [playerSecondDiceCurrentNumber, setPlayerSecondDiceCurrentNumber] = useState(1);
-    const [computerFirstDiceCurrentNumber, setComputerFirstDiceCurrentNumber] = useState(1);
-    const [computerSecondDiceCurrentNumber, setComputerSecondDiceCurrentNumber] = useState(1);
-    const [playerScore, setPlayerScore] = useState(0);
-    const [computerScore, setComputerScore] = useState(0);
+    const [playerFirstDiceCurrentNumber, setPlayerFirstDiceCurrentNumber] = useState(0);
+    const [playerSecondDiceCurrentNumber, setPlayerSecondDiceCurrentNumber] = useState(0);
+    const [computerFirstDiceCurrentNumber, setComputerFirstDiceCurrentNumber] = useState(0);
+    const [computerSecondDiceCurrentNumber, setComputerSecondDiceCurrentNumber] = useState(0);
+    const [scoreBoardPlayerScore, setScoreBoardPlayerScore] = useState(0);
+    const [scoreBoardComputerScore, setScoreBoardComputerScore] = useState(0);
     const getRandomDiceResult = () => Math.floor(Math.random() * 6) + 1;
 
     
+
     function randomizeDices() {
         setAreDicesRolling(true);
         const dicesRollingTimeout = 2000;
@@ -25,8 +26,18 @@ function DiceGame() {
             setComputerFirstDiceCurrentNumber(getRandomDiceResult());
             setComputerSecondDiceCurrentNumber(getRandomDiceResult());
             setAreDicesRolling(false);
+            
         }, dicesRollingTimeout);
     }
+    function startTheRound(){
+    randomizeDices();
+    console.log(scoreBoardComputerScore, scoreBoardPlayerScore);
+    const waitforDices = 3000;
+    setTimeout(() => {
+        addOnePointToTheWinner();
+    },waitforDices);
+    
+    }   
 
     function getPlayerScore() {
         return playerFirstDiceCurrentNumber + playerSecondDiceCurrentNumber;
@@ -34,6 +45,7 @@ function DiceGame() {
 
     function getComputerScore() {
         return computerFirstDiceCurrentNumber + computerSecondDiceCurrentNumber ;
+        
     }
 
     function getWinner() {
@@ -44,13 +56,31 @@ function DiceGame() {
         } else {
             return <div>Draw!</div>;
         }
+        
     }
     function resetGame(){
         setPlayerFirstDiceCurrentNumber(0)
         setPlayerSecondDiceCurrentNumber(0)
         setComputerFirstDiceCurrentNumber(0)
         setComputerSecondDiceCurrentNumber(0)
+        setScoreBoardComputerScore(0);
+        setScoreBoardPlayerScore(0);
     }
+    function addOnePointToTheWinner()
+    {   
+        if(getComputerScore() > getPlayerScore()){
+       // return  
+       console.log('komputer wygral');
+             setScoreBoardComputerScore(scoreBoardComputerScore + 1);
+        }
+        if (getPlayerScore() > getComputerScore()){
+            console.log('player');
+            setScoreBoardPlayerScore(scoreBoardPlayerScore + 1);
+         }else{console.log('something wrong', {computerFirstDiceCurrentNumber}, getPlayerScore());
+        }
+        
+    }
+    
     return (
         <>
         <div className="DiceGame">
@@ -73,13 +103,15 @@ function DiceGame() {
             </div> : <div>Dices are rolllling....</div>}
             <div className="ThrowButton">
                 <button disabled={areDicesRolling} 
-                onClick={randomizeDices}>Throw dice</button>
+                onClick={startTheRound}>Throw dice</button>
                 <button onClick={resetGame}>Reset Game</button>
             </div>
         </div>
         
         <div className="Score">
-            {playerScore}
+            
+          computer score...  {scoreBoardComputerScore}<br/>
+          player score.... {scoreBoardPlayerScore}
         </div>
         </>
     );
