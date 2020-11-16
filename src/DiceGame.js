@@ -14,26 +14,22 @@ function DiceGame() {
     const [scoreBoardComputerScore, setScoreBoardComputerScore] = useState(0);
     const getRandomDiceResult = () => Math.floor(Math.random() * 6) + 1;
 
-    
-
     function randomizeDices() {
         setAreDicesRolling(true);
         const dicesRollingTimeout = 2000;
         setTimeout(() => {
             setPlayerFirstDiceCurrentNumber(getRandomDiceResult());
             setPlayerSecondDiceCurrentNumber(getRandomDiceResult());
-
             setComputerFirstDiceCurrentNumber(getRandomDiceResult());
             setComputerSecondDiceCurrentNumber(getRandomDiceResult());
             setAreDicesRolling(false);
-            
         }, dicesRollingTimeout);
     }
     function startTheRound(){
-    randomizeDices();
-    console.log(scoreBoardComputerScore, scoreBoardPlayerScore);
-    const waitforDices = 3000;
-    setTimeout(() => {
+        randomizeDices();
+        console.log(scoreBoardComputerScore, scoreBoardPlayerScore);
+        const waitforDices = 3000;
+        setTimeout(() => {
         addOnePointToTheWinner();
     },waitforDices);
     
@@ -76,7 +72,9 @@ function DiceGame() {
         if (getPlayerScore() > getComputerScore()){
             console.log('player');
             setScoreBoardPlayerScore(scoreBoardPlayerScore + 1);
-         }else{console.log('something wrong', {computerFirstDiceCurrentNumber}, getPlayerScore());
+         } else if(getPlayerScore() === getComputerScore()){
+             console.log('something wrong',
+            computerFirstDiceCurrentNumber, getPlayerScore());
         }
         
     }
