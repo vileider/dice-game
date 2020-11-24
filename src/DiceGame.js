@@ -3,8 +3,6 @@ import './App.css';
 import Dice from "./Dice";
 import React,{useState, useEffect} from 'react';
 
-
-
 function DiceGame() {
     const [areDicesRolling, setAreDicesRolling] = useState(false);
     const [playerFirstDiceCurrentNumber, setPlayerFirstDiceCurrentNumber] = useState(0);
@@ -28,10 +26,8 @@ function DiceGame() {
     }
     function startTheRound(){
         randomizeDices();
-        console.log(scoreBoardComputerScore, scoreBoardPlayerScore);
-        
+        console.log(scoreBoardComputerScore, scoreBoardPlayerScore); 
     } 
-    
     useEffect(() => {
         if(!areDicesRolling){
         console.log([areDicesRolling],scoreBoardComputerScore,scoreBoardPlayerScore);
@@ -39,21 +35,14 @@ function DiceGame() {
         getComputerScore();
         addOnePointToTheWinner();
         }
-    
         },[areDicesRolling
             ])
-    
-      
-
     function getPlayerScore() {
         return playerFirstDiceCurrentNumber + playerSecondDiceCurrentNumber;
     }
-
     function getComputerScore() {
-        return computerFirstDiceCurrentNumber + computerSecondDiceCurrentNumber ;
-        
+        return computerFirstDiceCurrentNumber + computerSecondDiceCurrentNumber ;  
     }
-
     function getWinner() {
         if (getPlayerScore() > getComputerScore()) {
             return <div>You won!</div>;
@@ -61,8 +50,7 @@ function DiceGame() {
             return <div>Computer won!</div>;
         } else {
             return <div>Draw!</div>;
-        }
-        
+        }  
     }
     function resetGame(hardReset){
         setPlayerFirstDiceCurrentNumber(0)
@@ -72,8 +60,7 @@ function DiceGame() {
         if(hardReset){
             setScoreBoardComputerScore(0);
             setScoreBoardPlayerScore(0);
-        }
-        
+        }    
     }
     function addOnePointToTheWinner()
     {   
@@ -87,10 +74,8 @@ function DiceGame() {
             setScoreBoardPlayerScore(scoreBoardPlayerScore + 1);
          } else {
              console.log('something wrong');
-        }
-        
+        } 
     }
-    
     return (
         <>
         <div className="DiceGame">
