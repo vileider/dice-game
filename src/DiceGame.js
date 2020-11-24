@@ -1,7 +1,8 @@
 import './DiceGame.css';
 import './App.css';
 import Dice from "./Dice";
-import {useState} from 'react';
+import React,{useState, useEffect} from 'react';
+
 
 
 function DiceGame() {
@@ -28,12 +29,21 @@ function DiceGame() {
     function startTheRound(){
         randomizeDices();
         console.log(scoreBoardComputerScore, scoreBoardPlayerScore);
-        const waitforDices = 3000;
-        setTimeout(() => {
-        addOnePointToTheWinner();
-    },waitforDices);
+        
+    } 
     
-    }   
+    useEffect(() => {
+        if(!areDicesRolling){
+        console.log([areDicesRolling],scoreBoardComputerScore,scoreBoardPlayerScore);
+        getComputerScore();
+        getComputerScore();
+        addOnePointToTheWinner();
+        }
+    
+        },[areDicesRolling
+            ])
+    
+      
 
     function getPlayerScore() {
         return playerFirstDiceCurrentNumber + playerSecondDiceCurrentNumber;
@@ -54,27 +64,29 @@ function DiceGame() {
         }
         
     }
-    function resetGame(){
+    function resetGame(hardReset){
         setPlayerFirstDiceCurrentNumber(0)
         setPlayerSecondDiceCurrentNumber(0)
         setComputerFirstDiceCurrentNumber(0)
         setComputerSecondDiceCurrentNumber(0)
-        setScoreBoardComputerScore(0);
-        setScoreBoardPlayerScore(0);
+        if(hardReset){
+            setScoreBoardComputerScore(0);
+            setScoreBoardPlayerScore(0);
+        }
+        
     }
     function addOnePointToTheWinner()
     {   
         if(getComputerScore() > getPlayerScore()){
        // return  
-       console.log('komputer wygral');
+       console.log('komputer wygral',getPlayerScore(),getComputerScore());
              setScoreBoardComputerScore(scoreBoardComputerScore + 1);
         }
         if (getPlayerScore() > getComputerScore()){
-            console.log('player');
+            console.log('player',getPlayerScore(),getComputerScore());
             setScoreBoardPlayerScore(scoreBoardPlayerScore + 1);
-         } else if(getPlayerScore() === getComputerScore()){
-             console.log('something wrong',
-            computerFirstDiceCurrentNumber, getPlayerScore());
+         } else {
+             console.log('something wrong');
         }
         
     }
