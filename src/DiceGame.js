@@ -9,6 +9,10 @@ function DiceGame() {
     const [playerSecondDiceCurrentNumber, setPlayerSecondDiceCurrentNumber] = useState(0);
     const [computerFirstDiceCurrentNumber, setComputerFirstDiceCurrentNumber] = useState(0);
     const [computerSecondDiceCurrentNumber, setComputerSecondDiceCurrentNumber] = useState(0);
+    const [playerFirstDiceRollingNumber, setPlayerFirstDiceRollingNumber] = useState(1);
+    const [playerSecondDiceRollingNumber, setPlayerSecondDiceRollingNumber] = useState(1);
+    const [computerFirstDiceRollingNumber, setComputerFirstDiceRollingNumber] = useState(1);
+    const [computerSecondDiceRollingNumber, setComputerSecondDiceRollingNumber] = useState(1);
     const [scoreBoardPlayerScore, setScoreBoardPlayerScore] = useState(0);
     const [scoreBoardComputerScore, setScoreBoardComputerScore] = useState(0);
     const getRandomDiceResult = () => Math.floor(Math.random() * 6) + 1;
@@ -24,25 +28,37 @@ function DiceGame() {
             setAreDicesRolling(false);
         }, dicesRollingTimeout);
     }
+
     function startTheRound(){
         randomizeDices();
-        console.log(scoreBoardComputerScore, scoreBoardPlayerScore); 
-    } 
+        console.log(scoreBoardComputerScore, scoreBoardPlayerScore);
+    }
+
     useEffect(() => {
-        if(!areDicesRolling){
-        console.log([areDicesRolling],scoreBoardComputerScore,scoreBoardPlayerScore);
-        getComputerScore();
-        getComputerScore();
-        addOnePointToTheWinner();
+        if(!areDicesRolling) {
+            getComputerScore();
+            getComputerScore();
+            addOnePointToTheWinner();
+        } else {
+            const rollingIntervalId = setInterval(() => {
+                setPlayerFirstDiceRollingNumber(getRandomDiceResult());
+                setPlayerSecondDiceRollingNumber(getRandomDiceResult());
+                setComputerFirstDiceRollingNumber(getRandomDiceResult());
+                setComputerSecondDiceRollingNumber(getRandomDiceResult());
+            }, 200);
+
+            return () => clearInterval(rollingIntervalId);
         }
-        },[areDicesRolling
-            ])
+    },[areDicesRolling]);
+
     function getPlayerScore() {
         return playerFirstDiceCurrentNumber + playerSecondDiceCurrentNumber;
     }
+
     function getComputerScore() {
-        return computerFirstDiceCurrentNumber + computerSecondDiceCurrentNumber ;  
+        return computerFirstDiceCurrentNumber + computerSecondDiceCurrentNumber ;
     }
+
     function getWinner() {
         if (getPlayerScore() > getComputerScore()) {
             return <div>You won!</div>;
@@ -50,8 +66,9 @@ function DiceGame() {
             return <div>Computer won!</div>;
         } else {
             return <div>Draw!</div>;
-        }  
+        }
     }
+
     function resetGame(hardReset){
         setPlayerFirstDiceCurrentNumber(0)
         setPlayerSecondDiceCurrentNumber(0)
@@ -60,12 +77,13 @@ function DiceGame() {
         if(hardReset){
             setScoreBoardComputerScore(0);
             setScoreBoardPlayerScore(0);
-        }    
+        }
     }
+
     function addOnePointToTheWinner()
-    {   
+    {
         if(getComputerScore() > getPlayerScore()){
-       // return  
+       // return
        console.log('komputer wygral',getPlayerScore(),getComputerScore());
              setScoreBoardComputerScore(scoreBoardComputerScore + 1);
         }
@@ -74,37 +92,38 @@ function DiceGame() {
             setScoreBoardPlayerScore(scoreBoardPlayerScore + 1);
          } else {
              console.log('something wrong');
-        } 
+        }
     }
+
     return (
         <>
         <div className="DiceGame">
-            {areDicesRolling === false ? <div>
+            <div>
                 <div className="PlayerDices">
                     Your dices:
-                    <Dice currentNumber={playerFirstDiceCurrentNumber}></Dice>
-                    <Dice currentNumber={playerSecondDiceCurrentNumber}></Dice>
-                    Your result: {getPlayerScore()}
+                    <Dice currentNumber={areDicesRolling ? playerFirstDiceRollingNumber : playerFirstDiceCurrentNumber}></Dice>
+                    <Dice currentNumber={areDicesRolling ? playerSecondDiceRollingNumber : playerSecondDiceCurrentNumber}></Dice>
+                    Your result: {areDicesRolling === false ? getPlayerScore() : '...'}
                 </div>
                 <div className="ComputerDices">
                     Computer dices:
-                    <Dice currentNumber={playerFirstDiceCurrentNumber}></Dice>
-                    <Dice currentNumber={playerSecondDiceCurrentNumber}></Dice>
-                    Computer result: {getComputerScore() }
+                    <Dice currentNumber={areDicesRolling ? computerFirstDiceRollingNumber : computerFirstDiceCurrentNumber}></Dice>
+                    <Dice currentNumber={areDicesRolling ? computerSecondDiceRollingNumber : computerSecondDiceCurrentNumber}></Dice>
+                    Computer result: {areDicesRolling === false ? getComputerScore() : '...'}
                 </div>
-                <div className="WinnerContainer">
+                {areDicesRolling === false ? <div className="WinnerContainer">
                     {getWinner()}
-                </div>
-            </div> : <div>Dices are rolllling....</div>}
+                </div> : <div/>}
+            </div>
             <div className="ThrowButton">
-                <button disabled={areDicesRolling} 
+                <button disabled={areDicesRolling}
                 onClick={startTheRound}>Throw dice</button>
                 <button onClick={resetGame}>Reset Game</button>
             </div>
         </div>
-        
+
         <div className="Score">
-            
+
           computer score...  {scoreBoardComputerScore}<br/>
           player score.... {scoreBoardPlayerScore}
         </div>
