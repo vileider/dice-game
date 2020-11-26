@@ -1,0 +1,1 @@
+npm run dev - runs server in development mode
