@@ -1,1 +1,1 @@
-npm run dev - runs server in development mode
+nodemon index - runs server in development 
