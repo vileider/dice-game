@@ -2,6 +2,7 @@ import './DiceGame.css';
 import './App.css';
 import Dice from "./Dice";
 import React,{useState, useEffect} from 'react';
+import ScoreTemplate from './ScoreTemplate';
 
 function DiceGame() {
     const [areDicesRolling, setAreDicesRolling] = useState(false);
@@ -101,14 +102,22 @@ function DiceGame() {
             <div>
                 <div className="PlayerDices">
                     Your dices:
-                    <Dice currentNumber={areDicesRolling ? playerFirstDiceRollingNumber : playerFirstDiceCurrentNumber}></Dice>
-                    <Dice currentNumber={areDicesRolling ? playerSecondDiceRollingNumber : playerSecondDiceCurrentNumber}></Dice>
+                    <ScoreTemplate rollingDices={areDicesRolling}
+                     rollingNumber={playerFirstDiceRollingNumber}
+                     currentNumber={playerFirstDiceCurrentNumber}></ScoreTemplate>
+                     <ScoreTemplate rollingDices={areDicesRolling}
+                     rollingNumber={playerSecondDiceRollingNumber}
+                     currentNumber={playerSecondDiceCurrentNumber}></ScoreTemplate>
                     Your result: {areDicesRolling === false ? getPlayerScore() : '...'}
                 </div>
                 <div className="ComputerDices">
                     Computer dices:
-                    <Dice currentNumber={areDicesRolling ? computerFirstDiceRollingNumber : computerFirstDiceCurrentNumber}></Dice>
-                    <Dice currentNumber={areDicesRolling ? computerSecondDiceRollingNumber : computerSecondDiceCurrentNumber}></Dice>
+                    <ScoreTemplate rollingDices={areDicesRolling}
+                     rollingNumber={computerFirstDiceRollingNumber}
+                     currentNumber={computerFirstDiceCurrentNumber}></ScoreTemplate>
+                     <ScoreTemplate rollingDices={areDicesRolling}
+                     rollingNumber={computerSecondDiceRollingNumber}
+                     currentNumber={computerSecondDiceCurrentNumber}></ScoreTemplate>
                     Computer result: {areDicesRolling === false ? getComputerScore() : '...'}
                 </div>
                 {areDicesRolling === false ? <div className="WinnerContainer">
